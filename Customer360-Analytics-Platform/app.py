@@ -15,8 +15,15 @@ import streamlit as st
 # -------------------------------
 def load_data():
     # Replace with your dataset path
-    df = pd.read_csv("data/customers.csv")
-    return df
+    import os
+
+# Get the directory of this script
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Construct full path to the CSV file
+csv_path = os.path.join(BASE_DIR, "data", "customers.csv")
+
+df = pd.read_csv(csv_path)
 
 # -------------------------------
 # 2. Exploratory Data Analysis
