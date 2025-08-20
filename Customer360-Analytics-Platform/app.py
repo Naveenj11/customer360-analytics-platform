@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,19 +12,19 @@ from sklearn.ensemble import RandomForestClassifier
 import streamlit as st
 
 # -------------------------------
-# 1. Load Data (placeholder)
+# 1. Load Data
 # -------------------------------
 def load_data():
-    # Replace with your dataset path
-    import os
+    # Get the directory of this script
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Get the directory of this script
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Construct full path to the CSV file
+    csv_path = os.path.join(BASE_DIR, "data", "customers.csv")
 
-# Construct full path to the CSV file
-csv_path = os.path.join(BASE_DIR, "data", "customers.csv")
+    # Load and return the dataframe
+    df = pd.read_csv(csv_path)
+    return df
 
-df = pd.read_csv(csv_path)
 
 # -------------------------------
 # 2. Exploratory Data Analysis
@@ -33,6 +34,7 @@ def perform_eda(df):
     st.write("Data Preview:", df.head())
     st.write("Summary:", df.describe())
     st.bar_chart(df["Region"].value_counts())
+
 
 # -------------------------------
 # 3. Feature Engineering & Modeling
@@ -46,7 +48,9 @@ def train_model(df):
     X = pd.get_dummies(X, drop_first=True)
 
     # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     # Scale features
     scaler = StandardScaler()
@@ -64,6 +68,7 @@ def train_model(df):
     st.text("Classification Report:\n" + classification_report(y_test, preds))
 
     return model
+
 
 # -------------------------------
 # 4. Streamlit Dashboard
